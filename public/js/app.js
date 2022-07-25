@@ -21649,7 +21649,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: {
     errors: Object,
     faculties: Object,
-    ventures: Object
+    ventures: Object,
+    courses: Object,
+    retakeCourses: Object
   },
   mounted: function mounted() {
     self = this;
@@ -21754,11 +21756,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    checkRadioButton: function checkRadioButton(id) {
-      console.log(id);
+    checkRadioButton: function checkRadioButton(id, field) {
       var oldActiveParent = document.querySelector('.balance-stats.active');
       if (oldActiveParent) oldActiveParent.classList.remove('active');
-      var radio = "#ventureRadio" + id;
+      var radio = field + id;
       var radioDom = document.querySelector(radio);
       radioDom.checked = true;
       var radioParent = document.querySelector(radio).parentElement;
@@ -21766,6 +21767,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (radioDom.checked) {
         radioParent.classList.add('active');
         this.mainForm.venture = id;
+      }
+    },
+    checkTheBox: function checkTheBox(id, field) {
+      var checkbox = field + id;
+      var checkboxDom = document.querySelector(checkbox);
+      checkboxDom.checked = !checkboxDom.checked;
+      console.log(checkbox, checkboxDom);
+      var checkboxParent = document.querySelector(checkbox).parentElement;
+
+      if (checkboxDom.checked) {
+        checkboxParent.classList.add('active');
+      } else {
+        checkboxParent.classList.remove('active');
       }
     },
     reset: function reset() {
@@ -22988,7 +23002,7 @@ var _hoisted_54 = {
 
 var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "form-label"
-}, "Ventures", -1
+}, "Courses", -1
 /* HOISTED */
 );
 
@@ -22996,21 +23010,57 @@ var _hoisted_56 = {
   "class": "row"
 };
 var _hoisted_57 = {
-  "class": "col-xl-3 col-lg-3 col-md-4 col-sm-3 text-center"
+  "class": "col-xl-4 col-lg-4 col-md-4 col-sm-4 text-center"
 };
 var _hoisted_58 = ["title", "onClick"];
 var _hoisted_59 = ["value", "id"];
 var _hoisted_60 = {
-  "class": "col-xxl-4 col-xl-4 col-lg-4 mb-2"
+  "class": "col-xxl-12 col-xl-12 col-lg-12 mb-2"
 };
 
 var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-label"
+}, "Are you Writing as Carryover", -1
+/* HOISTED */
+);
+
+var _hoisted_62 = {
+  "class": "row"
+};
+var _hoisted_63 = {
+  "class": "col-xl-4 col-lg-4 col-md-4 col-sm-4 text-center"
+};
+var _hoisted_64 = ["title", "onClick"];
+var _hoisted_65 = ["value", "id"];
+var _hoisted_66 = {
+  "class": "col-xxl-12 col-xl-12 col-lg-12 mb-2"
+};
+
+var _hoisted_67 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-label"
+}, "Ventures", -1
+/* HOISTED */
+);
+
+var _hoisted_68 = {
+  "class": "row"
+};
+var _hoisted_69 = {
+  "class": "col-xl-3 col-lg-3 col-md-4 col-sm-3 text-center"
+};
+var _hoisted_70 = ["title", "onClick"];
+var _hoisted_71 = ["value", "id"];
+var _hoisted_72 = {
+  "class": "col-xxl-4 col-xl-4 col-lg-4 mb-2"
+};
+
+var _hoisted_73 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "form-label"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_74 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "mt-3"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "submit",
@@ -23140,17 +23190,65 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "text",
     "class": "form-control",
     "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
-      return $data.mainForm.MatricNumber = $event;
+      return $data.mainForm.matricNumber = $event;
     }),
     placeholder: "Enter number"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.mainForm.MatricNumber]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ventures, function (venture) {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.mainForm.matricNumber]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.courses, function (course) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      "class": "balance-stats courses c-pointer",
+      title: course.title,
+      onClick: function onClick($event) {
+        return $options.checkTheBox(course.id, '#courseCheckBox');
+      }
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(course.title.substring(0, 20)), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "NGN " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(course.fee.toLocaleString('en-US')), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      type: "checkbox",
+      name: "course",
+      value: course.id,
+      id: 'courseCheckBox' + course.id,
+      "class": "d-none"
+    }, null, 8
+    /* PROPS */
+    , _hoisted_59)], 8
+    /* PROPS */
+    , _hoisted_58)]);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [_hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_62, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.retakeCourses, function (retakeCourse) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      "class": "balance-stats retakecourses c-pointer",
+      title: retakeCourse.title,
+      onClick: function onClick($event) {
+        return $options.checkTheBox(retakeCourse.id, '#retakeCourseRadio');
+      }
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(retakeCourse.title.substring(0, 20)), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "NGN " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(retakeCourse.fee.toLocaleString('en-US')), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      type: "checkbox",
+      name: "retakeCourse",
+      value: retakeCourse.id,
+      id: 'retakeCourseRadio' + retakeCourse.id,
+      "class": "d-none"
+    }, null, 8
+    /* PROPS */
+    , _hoisted_65)], 8
+    /* PROPS */
+    , _hoisted_64)]);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_66, [_hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ventures, function (venture) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_69, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       "class": "balance-stats c-pointer",
       title: venture.name,
       onClick: function onClick($event) {
-        return $options.checkRadioButton(venture.id);
+        return $options.checkRadioButton(venture.id, '#ventureRadio');
       }
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(venture.name.substring(0, 20)), 1
     /* TEXT */
@@ -23164,12 +23262,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "d-none"
     }, null, 8
     /* PROPS */
-    , _hoisted_59)], 8
+    , _hoisted_71)], 8
     /* PROPS */
-    , _hoisted_58)]);
+    , _hoisted_70)]);
   }), 256
   /* UNKEYED_FRAGMENT */
-  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [_hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_72, [_hoisted_73, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     name: "paymentCode",
     type: "text",
     "class": "form-control",
@@ -23178,7 +23276,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.mainForm.paymentCode]])])]), _hoisted_62], 32
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.mainForm.paymentCode]])])]), _hoisted_74], 32
   /* HYDRATE_EVENTS */
   )])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])], 64
   /* STABLE_FRAGMENT */

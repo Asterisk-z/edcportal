@@ -60,11 +60,21 @@ class StudentManagementController extends Controller
                         'fee' => $venture->fee,
                     ];
                 }),
-                'courses' => Courses::orderBy('level', "desc")->get()->map(function ($courses) {
+                'courses' => Courses::where('isCarryOver', 'NO')->orderBy('level', "desc")->get()->map(function ($courses) {
                     return [
                         'id' => $courses->id,
-                        'title' => Str::title($courses->name),
+                        'title' => Str::title($courses->title),
                         'code' => $courses->code,
+                        'level' => $courses->level,
+                        'fee' => $courses->fee,
+                    ];
+                }),
+                'retakeCourses' => Courses::where('isCarryOver', 'YES')->orderBy('level', "desc")->get()->map(function ($courses) {
+                    return [
+                        'id' => $courses->id,
+                        'title' => Str::title($courses->title),
+                        'code' => $courses->code,
+                        'level' => $courses->level,
                         'fee' => $courses->fee,
                     ];
                 })

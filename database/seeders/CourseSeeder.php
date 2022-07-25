@@ -49,7 +49,7 @@ class CourseSeeder extends Seeder
             'unit' => '2',
             'level' => '100',
             'fee' => '1000',
-            'isCarryOver' => 'NO',
+            'isCarryOver' => 'YES',
             'semester' => 'second'
         ]);
         Courses::create([
@@ -58,7 +58,7 @@ class CourseSeeder extends Seeder
             'unit' => '2',
             'level' => '200',
             'fee' => '5000',
-            'isCarryOver' => 'NO',
+            'isCarryOver' => 'YES',
             'semester' => 'second'
         ]);
         Courses::create([
@@ -67,7 +67,7 @@ class CourseSeeder extends Seeder
             'unit' => '2',
             'level' => '300',
             'fee' => '1000',
-            'isCarryOver' => 'NO',
+            'isCarryOver' => 'YES',
             'semester' => 'second'
         ]);
     }

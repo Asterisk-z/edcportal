@@ -57,9 +57,10 @@
                                             @change="callDepartment">
                                             <option selected>Select Faculty</option>
                                             <option v-for="faculty in faculties" :value="faculty.id">Faculty of {{
-                                                faculty.name }}</option>
+                                            faculty.name }}</option>
                                         </select>
                                     </div>
+
                                     <div class="col-xxl-4 col-xl-4 col-lg-4  mb-2">
                                         <label class="form-label">Department</label>
                                         <select name="department" class="form-control"
@@ -71,6 +72,7 @@
                                                 {{ department.name.toLowerCase() }}</option>
                                         </select>
                                     </div>
+
                                     <div class="col-xxl-4 col-xl-4 col-lg-4  mb-2">
                                         <label class="form-label">Level</label>
                                         <select name="level" class="form-control" v-model="confirmationForm.level">
@@ -103,20 +105,51 @@
                                     <div class="col-xxl-6 col-xl-6 col-lg-6  mb-2">
                                         <label class="form-label">Matric Number</label>
                                         <input name="MatricNumber" type="text" class="form-control"
-                                            v-model="mainForm.MatricNumber" placeholder="Enter number">
+                                            v-model="mainForm.matricNumber" placeholder="Enter number">
                                     </div>
 
+                                    <div class="col-xxl-12 col-xl-12 col-lg-12  mb-2">
+                                        <label class="form-label">Courses</label>
+                                        <div class="row">
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 text-center"
+                                                v-for="course in courses">
+                                                <div class="balance-stats courses c-pointer" :title="course.title"
+                                                    @click="checkTheBox(course.id, '#courseCheckBox')">
+                                                    <h3>{{ course.title.substring(0, 20) }}</h3>
+                                                    <p>NGN {{ course.fee.toLocaleString('en-US') }}</p>
+                                                    <input type="checkbox" name="course" :value="course.id"
+                                                        :id="'courseCheckBox'+course.id" class="d-none" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-12 col-xl-12 col-lg-12  mb-2">
+                                        <label class="form-label">Are you Writing as Carryover</label>
+                                        <div class="row">
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 text-center"
+                                                v-for="retakeCourse in retakeCourses">
+                                                <div class="balance-stats retakecourses c-pointer"
+                                                    :title="retakeCourse.title"
+                                                    @click="checkTheBox(retakeCourse.id, '#retakeCourseRadio')">
+                                                    <h3>{{ retakeCourse.title.substring(0, 20) }}</h3>
+                                                    <p>NGN {{ retakeCourse.fee.toLocaleString('en-US') }}</p>
+                                                    <input type="checkbox" name="retakeCourse" :value="retakeCourse.id"
+                                                        :id="'retakeCourseRadio'+retakeCourse.id" class="d-none" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-xxl-12 col-xl-12 col-lg-12  mb-2">
                                         <label class="form-label">Ventures</label>
                                         <div class="row">
                                             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-3 text-center"
                                                 v-for="venture in ventures">
                                                 <div class="balance-stats c-pointer" :title="venture.name"
-                                                    @click="checkRadioButton(venture.id)">
+                                                    @click="checkRadioButton(venture.id, '#ventureRadio')">
                                                     <h3>{{ venture.name.substring(0, 20) }}</h3>
                                                     <p>NGN {{ venture.fee.toLocaleString('en-US') }}</p>
                                                     <input type="radio" name="venture" :value="venture.id"
-                                                        :id="'ventureRadio'+venture.id" class="d-none"/>
+                                                        :id="'ventureRadio'+venture.id" class="d-none" />
                                                 </div>
                                             </div>
                                         </div>
@@ -157,6 +190,8 @@ export default {
         errors: Object,
         faculties: Object,
         ventures: Object,
+        courses: Object,
+        retakeCourses: Object,
     },
     mounted() {
         self = this;
@@ -217,7 +252,6 @@ export default {
             // this.mainForm.post('/admin/student-management/store');
         },
         async callDepartment() {
-            // console.log(this.confirmationForm.faculty);
             const departments = await axios.get(`/departments/${this.confirmationForm.faculty}`)
                 .then(function (response) {
                     return response.data;
@@ -225,18 +259,30 @@ export default {
             this.departments = departments;
 
         },
-        checkRadioButton(id) {
-            console.log(id);
+        checkRadioButton(id, field) {
             const oldActiveParent = document.querySelector('.balance-stats.active');
             if (oldActiveParent) oldActiveParent.classList.remove('active');
-
-            const radio = "#ventureRadio" + id;
+            const radio = field + id;
             const radioDom = document.querySelector(radio);
             radioDom.checked = true;
             const radioParent = document.querySelector(radio).parentElement;
             if (radioDom.checked) {
                 radioParent.classList.add('active');
                 this.mainForm.venture = id;
+            }
+
+        },
+        checkTheBox(id, field) {
+
+            const checkbox = field + id;
+            const checkboxDom = document.querySelector(checkbox);
+            checkboxDom.checked = !checkboxDom.checked;
+            console.log(checkbox, checkboxDom)
+            const checkboxParent = document.querySelector(checkbox).parentElement;
+            if (checkboxDom.checked) {
+                checkboxParent.classList.add('active');
+            } else {
+                checkboxParent.classList.remove('active');
             }
 
         },
