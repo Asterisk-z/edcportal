@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('passport');
             $table->string('systemNumber');
             $table->string('paymentCode');
+            $table->string('programType');
             $table->string('department');
             $table->string('faculty');
             $table->integer('course_registration_id')->constrained('course_registrations');

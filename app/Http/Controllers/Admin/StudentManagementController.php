@@ -27,13 +27,17 @@ class StudentManagementController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Students', [
-                'students' => User::where('role', 'student')->orderBy('created_at', "desc")->paginate(15)->withQueryString()->through(fn ($student) => [
-                    'id' => $student->id,
-                    'name' => $student->name,
+
+        return Inertia::render('Admin/Student/Index', [
+                'students' => Student::orderBy('created_at', "desc")->paginate(15)->withQueryString()->through(fn ($student) => [
+                    'id'    => $student->id,
+                    'name'  => $student->fullName,
+                    'level' => $student->level,
                     'email' => $student->email,
-                    'department' => $student->department,
-                    "faculty" => $student->faculty,
+                    'edcNumber'     => $student->systemNumber,
+                    'department'    => $student->department,
+                    "faculty"       => $student->faculty,
+                    "courses"       => $student->course_registration,
                     "registrationNumber" => $student->registration_number,
                 ]),
         ]);
@@ -57,7 +61,7 @@ class StudentManagementController extends Controller
                     return [
                         'id' => $venture->id,
                         'name' => Str::title($venture->name),
-                        'fee' => $venture->fee,
+                        'fee' => number_format($venture->fee, 2),
                     ];
                 }),
                 'courses' => Courses::where('isCarryOver', 'NO')->orderBy('level', "desc")->get()->map(function ($courses) {
@@ -66,7 +70,7 @@ class StudentManagementController extends Controller
                         'title' => Str::title($courses->title),
                         'code' => $courses->code,
                         'level' => $courses->level,
-                        'fee' => $courses->fee,
+                        'fee' => number_format($courses->fee, 2),
                     ];
                 }),
                 'retakeCourses' => Courses::where('isCarryOver', 'YES')->orderBy('level', "desc")->get()->map(function ($courses) {
@@ -75,7 +79,7 @@ class StudentManagementController extends Controller
                         'title' => Str::title($courses->title),
                         'code' => $courses->code,
                         'level' => $courses->level,
-                        'fee' => $courses->fee,
+                        'fee' => number_format($courses->fee, 2),
                     ];
                 })
         ]);
@@ -95,32 +99,42 @@ class StudentManagementController extends Controller
             ]);
         }
 
-        $re = file_get_contents('https://myunical.edu.ng/verifyfee/GetSchoolFee.ashx?pin='.request('paymentCode'));
-        $res = json_decode($re, true);
+        // $re = file_get_contents('https://myunical.edu.ng/verifyfee/GetSchoolFee.ashx?pin='.request('paymentCode'));
+        // $res = json_decode($re, true);
 
-    	if ($res['status'] == 'success') {
-			$name = $res['data']['fullname'];
-            $regNumber = $res['data']['mat_no'];
-			$faculty = $res['data']['faculty'];
-			$department = $res['data']['department'];
-			$level = $res['data']['level'];
-			$session = $res['data']['session'];
+    	// if ($res['status'] == 'success') {
+
+		// 	$name = $res['data']['fullname'];
+        //     $regNumber = $res['data']['mat_no'];
+		// 	$faculty = $res['data']['faculty'];
+		// 	$department = $res['data']['department'];
+		// 	$level = $res['data']['level'];
+		// 	$session = $res['data']['session'];
+
+		// 	$data = [
+		// 		'name' => Str::title($name),
+		// 		'registration_number' => $regNumber,
+		// 		'session' => $session,
+		// 		'payment_code' => $res['data']['rec_no'],
+		// 		'faculty' => Str::title($faculty),
+		// 		'department' => Str::title($department),
+		// 		'level' => $level,
+		// 	];
+
+		// }else {
+		// 	$data = null;
+		// }
+
 
 			$data = [
-				'name' => $name,
-				'registeration_number' => $regNumber,
-				'session' => $session,
-				'payment_code' => '033145214511632389913951',
-				'faculty' => $faculty,
-				'department' => $department,
-				'level' => $level,
+				'name' => Str::title("JOHN FAVOUR BLESSING"),
+				'registration_number' => "18/02245064",
+				'session' => "2020/2021",
+				'payment_code' => "033145214511632389913951",
+				'faculty' => Str::title("ALLIED MEDICAL SCIENCES"),
+				'department' => Str::title("NURSING SCIENCE"),
+				'level' => '300',
 			];
-
-		}else {
-			$data = null;
-		}
-
-
 
         return $data;
     }
@@ -131,41 +145,34 @@ class StudentManagementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeStudent(AdmitStudentRequest $request)
+    // public function register(AdmitStudentRequest $request)
+    public function register(Request $request)
     {
+        // dd($request->all(), array_merge($request->coursesToRegister, $request->coursesToRetake));
         try {
 
-            if(User::where('registration_number', $request->registrationNumber)->exists()) {
-                 throw ValidationException::withMessages([
-                    'email' => 'Student Exist in database',
-                ]);
-            }
 
-            User::create([
-                'name' => $request->name,
-                'email' => "".str::lower(str_replace(' ', '' , $request->name))."@magaretschools.com",
-                'password' => Hash::make(Str::random(9)),
-                'registration_number' => $request->registrationNumber,
-                'mobileNumber'=> $request->mobileNumber,
-                'department' => $request->department,
-                'faculty' => $request->faculty,
-                'gender' => $request->gender,
-                'sessionOfEnrolement' => '2021/2022',
-                'dob' => Carbon::createFromDate($request->dob),
-            ])->payments()->create([
-                'schoolFeeCode' => 'sfc'.str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), 0, 4).Str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), -4),
-                'schoolFeeAmount' => '200000',
-                'schoolFeeStatus' => 'NotPaid',
-                'acceptanceFeeCode' => 'afc'.str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), 0, 4).Str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), -4),
-                'acceptanceFeeAmount' => '200000',
-                'acceptanceFeeAmount' => 'NotPaid',
-                'departmentalFeeCode' => 'dfc'.str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), 0, 4).Str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), -4),
-                'departmentalFeeAmount' => '200000',
-                'departmentalFeeAmount' => 'NotPaid',
-                'hostelFeeCode' => 'hfc'.str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), 0, 4).Str::random(4).substr(str_replace(' ', '' , "good bye to sapa"), -4),
-                'hostelFeeAmount' => '200000',
-                'hostelFeeAmount' => 'NotPaid',
-                'session' => '2021/2022',
+            $student = Student::create([
+                'fullName' => $request->apiData['name'],
+                'metricNumber' => $request->confirmData['regNumber'],
+                'email' => $request->confirmData['email'],
+                'sex' => $request->confirmData['gender'],
+                'phoneNumber' => $request->phoneNumber,
+                'programType' => $request->programType,
+                'level' => $request->confirmData['level'],
+                'sessionOfRegistration' => $request->apiData['session'],
+                'fingerprint' => Str::uuid(),
+                'passport' => Str::uuid(),
+                'systemNumber' => Student::systemNumber(),
+                'paymentCode' => $request->apiData['payment_code'],
+                'department' => $request->apiData['faculty'],
+                'faculty' => $request->apiData['department'],
+                'course_registration_id'  => "1",
+            ])->course_registration()->create([
+                'student_id' => '1',
+                "courses" =>  array_merge($request->coursesToRegister, $request->coursesToRetake),
+                'year' => $request->apiData['session'],
+                'venture' => $request->venture
             ]);
 
             return redirect()->route('admin.students')->with('success' ,'Student Admission Successfull');

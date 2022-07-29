@@ -1,9 +1,10 @@
 <template>
+
     <Head>
         <title>Student Management</title>
     </Head>
-    <div class="row">
-        <div class="col-xl-12 col-lg-12">
+    <div class="content-body">
+        <div class="container">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card p-0">
@@ -13,22 +14,24 @@
                                     <h3 class="mt-2">Student Management</h3>
                                 </div>
                                 <div class="col-xl-7 col-lg-6 col-md-7 col-sm-6">
-                                    <div class="float-sm-end float-none my-1">
-                                        <Link href="/admin/student-management/add" class="btn btn-primary me-2">Admit Student</Link>
+                                    <div class="float-sm-end float-none ">
+                                        <Link href="/admin/student-management/add" class="btn btn-primary me-2">Admit
+                                        Student</Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-12">
+                <div class="col-xxl-12 col-xl-12 col-lg-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">List Student</h4>
+                        </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table border text-nowrap text-md-nowrap mb-0">
-                                    <thead class="table-primary">
+                            <div class="table-responsive table-icon">
+                                <table class="table">
+                                    <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
@@ -46,29 +49,38 @@
                                             <td>{{ student.department }}</td>
                                             <td>{{ student.faculty }}</td>
                                             <td>
-                                                <Link :href="`/admin/student-management/${student.id}/display/${student.registrationNumber}`" class="btn btn-primary btn-sm ml-3">
-                                                    <i class="fa fa-eye fa-1.5x "></i>
+                                                <Link
+                                                    :href="`/admin/student-management/${student.id}/display/${student.registrationNumber}`"
+                                                    class="btn btn-primary btn-sm ">
+                                                View
                                                 </Link>
                                             </td>
                                         </tr>
-
                                     </tbody>
                                 </table>
                             </div>
-
-                            <ul class="pagination mt-5 justify-content-center" >
-
-                                <li class="page-item " v-for="(link, key) in students.links" :class="{ 'active' : link.active ,  'page-prev' : (key == students.links[0]),  'page-next' : ( key == students.links[students.links.length - 1]) }">
-                                    <a class="page-link" :key="`link-${key}`" :href="link.url" tabindex="-1" v-html="link.label"></a>
-                                </li>
-
-                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+                    <div class="card">
+
+                            <ul class="pagination mt-5 justify-content-center">
+
+                                <li class="page-item " v-for="(link, key) in students.links"
+                                    :class="{ 'active' : link.active ,  'page-prev' : (key == students.links[0]),  'page-next' : ( key == students.links[students.links.length - 1]) }">
+                                    <a class="page-link" :key="`link-${key}`" :href="link.url" tabindex="-1"
+                                        v-html="link.label"></a>
+                                </li>
+
+                            </ul>
+
+                    </div>
 </template>
 
 <script>

@@ -34,8 +34,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin/')->name('admin.')->group( f
 
     Route::get('dashboard', [DashbaordController::class, 'index'])->name('dashboard');
 
-    Route::get('students/registration', [StudentManagementController::class, 'registration'])->name('students');
+    Route::get('students', [StudentManagementController::class, 'index'])->name('students');
+
+    Route::get('students/registration', [StudentManagementController::class, 'registration']);
     Route::post('students/verify/payment', [StudentManagementController::class, 'verifyPayment']);
+    Route::post('students/register', [StudentManagementController::class, 'register']);
+
+
 
     Route::get('student-management/add', [StudentManagementController::class, 'addStudent'])->name('student.add');
     Route::post('student-management/store', [StudentManagementController::class, 'storeStudent'])->name('student.store');

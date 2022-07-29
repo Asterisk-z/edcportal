@@ -8,9 +8,9 @@
                         <div class="header-content">
                             <div class="header-left">
                                 <div class="brand-logo">
-                                    <a class="mini-logo" href="#">
-                                        <img src="/images/favicon.png" alt="" width="40">
-                                    </a>
+                                    <Link class="mini-logo" href="/admin/dashboard">
+                                    <img src="/images/favicon.png" alt="" width="40">
+                                    </Link>
                                 </div>
                             </div>
                             <div class="header-right">
@@ -39,12 +39,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <a class="dropdown-item" href="">
+                                        <Link class="dropdown-item" href="">
                                             <span><i class="ri-user-line"></i></span>Profile
-                                        </a>
-                                        <a class="dropdown-item logout" href="#">
+                                        </Link>
+                                        <Link class="dropdown-item logout" href="#">
                                             <i class="ri-logout-circle-line"></i>Logout
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -55,50 +55,50 @@
         </div>
         <div class="sidebar">
             <div class="brand-logo">
-                <a class="full-logo" href="#"><img src="/images/favicon.png" alt="" width="30"></a>
+                <Link class="full-logo" href="/admin/dashboard"><img src="/images/favicon.png" alt="" width="30"></Link>
             </div>
             <div class="menu">
                 <ul>
                     <li>
-                        <Link href="#">
-                            <span><i class="ri-layout-grid-fill"></i></span>
-                            <span class="nav-text">Dashboard</span>
+                        <Link href="/admin/dashboard">
+                        <span><i class="ri-layout-grid-fill"></i></span>
+                        <span class="nav-text">Dashboard</span>
                         </Link>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <Link href="/admin/students">
                             <span><i class="ri-star-line"></i></span>
-                            <span class="nav-text">Registeration</span></a>
+                            <span class="nav-text">Registration</span></Link>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <Link href="#">
                             <span><i class="ri-briefcase-line"></i></span>
-                            <span class="nav-text">School Setting</span></a>
+                            <span class="nav-text">School Setting</span></Link>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <Link href="#">
                             <span><i class="ri-account-box-line"></i></span>
-                            <span class="nav-text">Users Management</span></a>
+                            <span class="nav-text">Users Management</span></Link>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <Link href="#">
                             <span><i class="ri-heart-line"></i></span>
-                            <span class="nav-text">Users Management</span></a>
+                            <span class="nav-text">Users Management</span></Link>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <Link href="#">
                             <span><i class="ri-wallet-line"></i></span>
-                            <span class="nav-text">Receipt</span></a>
+                            <span class="nav-text">Receipt</span></Link>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <Link href="#">
                             <span><i class="ri-settings-3-line"></i></span>
-                            <span class="nav-text">Settings</span></a>
+                            <span class="nav-text">Settings</span></Link>
                     </li>
-                    <li class=" logout"><a href="#">
+                    <li class=" logout"><Link href="#">
                             <span><i class="ri-logout-circle-line"></i></span>
                             <span class="nav-text">Logout</span>
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>

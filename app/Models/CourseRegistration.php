@@ -10,12 +10,14 @@ class CourseRegistration extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $casts = [
         'courses' => 'array',
     ];
 
     public function student() {
-        return $this->hasMany(Student::class);
+        return $this->belongsTo(Student::class);
     }
 
 }
