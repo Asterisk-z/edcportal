@@ -10,10 +10,24 @@ class Student extends Model
 {
     use HasFactory;
 
+    protected $with = ['course_registration', 'transaction'];
+
     protected $guarded = [];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 
     public function course_registration() {
         return $this->hasMany(CourseRegistration::class);
+    }
+
+    public function venture() {
+        return $this->hasOne(Venture::class);
+    }
+
+    public function transaction() {
+        return $this->hasOne(Transaction::class);
     }
 
     public static function systemNumber() {

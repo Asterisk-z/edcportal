@@ -16,27 +16,39 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        $admin = User::create([
             'name' =>'superAdmin',
             'email' => 'suadmin@gmail.com',
+            'role' => 'admin',
             'role_id' => '1',
-            'token_id' => '1',
             'password' => Hash::make('123456'),
             'gender' => 'male',
             'temp_password' => 'NO',
             'mobileNumber' => '123456789',
-        ]);
+        ])->createToken();
 
-        User::create([
+        $vendor = User::create([
             'name' =>'vendor',
             'email' => 'vendor@gmail.com',
             'role_id' => '4',
-            'token_id' => '2',
+            'role' => 'vendor',
             'password' => Hash::make('123456'),
             'gender' => 'male',
             'temp_password' => 'NO',
             'mobileNumber' => '123456789',
-        ]);
+        ])->createToken();
+
+        $vendor = User::create([
+            'name' =>'vendor stew',
+            'email' => 'vendorstew@gmail.com',
+            'role_id' => '4',
+            'role' => 'vendor',
+            'password' => Hash::make('123456'),
+            'gender' => 'male',
+            'temp_password' => 'NO',
+            'mobileNumber' => '123456789',
+        ])->createToken();
+
 
         User::factory(10)->create();
     }

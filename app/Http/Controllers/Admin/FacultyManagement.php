@@ -13,11 +13,12 @@ class FacultyManagement extends Controller
 
 
         return Inertia::render('Admin/Faculty', [
-            'faculties' => Faculty::orderBy('created_at', 'DESC')->paginate(10)->withQueryString()->through(fn ($faculty) => [
+            'faculties' => Faculty::orderBy('name', 'DESC')->paginate(10)->withQueryString()->through(fn ($faculty) => [
                 'id' => $faculty->id,
                 'name' =>  $faculty->name
             ]),
         ]);
+
     }
 
     public function add(Request $request) {
@@ -26,8 +27,20 @@ class FacultyManagement extends Controller
             'name' => 'required|string|unique:faculties'
         ]);
 
-        $save = Faculty::create($data);
-
-        return redirect()->route('admin.faculty');
+        return Faculty::create($data);
     }
+
+    public function searchByName(Request $request) {
+
+        return Faculty::where('name', request('name'))->firstOrFail();
+
+    }
+
+    public function searchById(Request $request) {
+
+        return Faculty::where('id', request('id'))->firstOrFail();
+
+    }
+
+
 }

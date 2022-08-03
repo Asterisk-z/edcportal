@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class FeeManagement extends Controller
+class UserManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,14 @@ class FeeManagement extends Controller
      */
     public function index()
     {
-        return Inertia::render("Admin/FeeTransaction");
+        return Inertia::render('Admin/Users/Index', [
+            'faculties' => User::where('role', '>=', '2')->orderBy('name', 'asc')->paginate(10)->withQueryString()->through(fn ($user) => [
+                'id' => $user->id,
+                'name' =>  $user->name,
+                'email' =>  $user->email,
+                'role' =>  $user->role,
+            ]),
+        ]);
     }
 
     /**

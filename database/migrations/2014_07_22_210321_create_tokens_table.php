@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('tokens', function (Blueprint $table) {
             $table->id();
+            $table->integer("user_id")->constrained('users');
             $table->integer('used')->default(0);
             $table->integer('bought')->default(0);
             $table->timestamps();

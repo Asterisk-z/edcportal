@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
+use App\Models\AppSetting;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DepartmentSeeder extends Seeder
+class SettingSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,82 +14,10 @@ class DepartmentSeeder extends Seeder
      * @return void
      */
     public function run()
-    {    }
+    {
+        AppSetting::create([
+            "name" => "session",
+            "value" => '2020/2021'
+        ]);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

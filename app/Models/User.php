@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Role;
+use App\Models\Token;
 use App\Models\PaymentCode;
 use App\Models\Courses;
 
@@ -15,7 +16,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['role'];
+    protected $with = ['role', 'token', 'students'];
 
     /**
      * The attributes that are mass assignable.
@@ -39,20 +40,36 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'dob' => 'datetime'
     ];
 
-    public function courses() {
-        return $this->hasMany(Courses::class);
-    }
-
     public function role() {
         return $this->belongsTo(Role::class);
     }
 
+    public function token() {
+        return $this->hasOne(Token::class);
+    }
+
+    public function students() {
+        return $this->hasMany(Student::class);
+    }
+
+    public function courses() {
+        return $this->hasMany(Courses::class);
+    }
+
     public function payments() {
         return $this->hasMany(PaymentCode::class);
+    }
+
+    public function createToken() {
+        return $this->token()->create([
+                'used' => 0,
+                'bought' => 0
+            ]);
     }
 }

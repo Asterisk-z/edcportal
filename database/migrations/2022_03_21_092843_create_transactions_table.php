@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('status', ['PAID', 'NOTPAID'])->default('NOTPAID');
             $table->string('items');
             $table->string('totalAmount');
+            $table->integer('student_id')->constrained('students');
             $table->string('actualAmount');// without 1.5% of the initial amount and the portal charge
             $table->timestamps();
         });

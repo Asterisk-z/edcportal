@@ -15,13 +15,11 @@ class TokenSeeder extends Seeder
      */
     public function run()
     {
-        Token::create([
-            'used' => 0,
-            'bought' => 0
+        Token::where('user_id', '2')->update([
+            'bought' => 500
         ]);
-        Token::create([
-            'used' => 0,
-            'bought' => 0
+        Token::where('user_id', '3')->update([
+            'bought' => 500
         ]);
     }
 }

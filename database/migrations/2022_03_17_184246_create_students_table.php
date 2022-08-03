@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('programType');
             $table->string('department');
             $table->string('faculty');
-            $table->integer('course_registration_id')->constrained('course_registrations');
+            $table->integer('user_id')->constrained('user');
             $table->timestamp('dob')->nullable();
             $table->timestamps();
         });

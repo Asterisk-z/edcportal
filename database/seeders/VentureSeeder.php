@@ -130,26 +130,6 @@ class VentureSeeder extends Seeder
             'code' => 'VT023',
             'fee' => '1000',
         ]);
-        // Venture::create([
-        //     'name' => 'introduction to entrepreneur',
-        //     'code' => 'VT024',
-        //     'fee' => '2900',
-        // ]);
-        // Venture::create([
-        //     'name' => 'entrepreneurship education',
-        //     'code' => 'VT025',
-        //     'fee' => '7000',
-        // ]);
-        // Venture::create([
-        //     'name' => 'entrepreneurship trade skill',
-        //     'code' => 'VT026',
-        //     'fee' => '2900',
-        // ]);
-        // Venture::create([
-        //     'name' => 'equipment maintenance',
-        //     'code' => 'VT027',
-        //     'fee' => '3500',
-        // ]);
     }
 }
 

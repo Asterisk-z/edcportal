@@ -126,17 +126,22 @@ class StudentManagementController extends Controller
 		// }
 
 
+
 			$data = [
 				'name' => Str::title("JOHN FAVOUR BLESSING"),
 				'registration_number' => "18/02245064",
 				'session' => "2020/2021",
-				'payment_code' => "033145214511632389913951",
+				'payment_code' => "03314521451163238991",
 				'faculty' => Str::title("ALLIED MEDICAL SCIENCES"),
 				'department' => Str::title("NURSING SCIENCE"),
 				'level' => '300',
 			];
 
-        return $data;
+        if ($data['session'] == env('SESSION')) {
+            return $data;
+        }else {
+            return null;
+        }
     }
 
     /**
@@ -148,11 +153,12 @@ class StudentManagementController extends Controller
     // public function register(AdmitStudentRequest $request)
     public function register(Request $request)
     {
+        // dd(auth()->user()->students()->create);
         // dd($request->all(), array_merge($request->coursesToRegister, $request->coursesToRetake));
         try {
 
 
-            $student = Student::create([
+            auth()->user()->students()->create([
                 'fullName' => $request->apiData['name'],
                 'metricNumber' => $request->confirmData['regNumber'],
                 'email' => $request->confirmData['email'],
@@ -167,9 +173,7 @@ class StudentManagementController extends Controller
                 'paymentCode' => $request->apiData['payment_code'],
                 'department' => $request->apiData['faculty'],
                 'faculty' => $request->apiData['department'],
-                'course_registration_id'  => "1",
             ])->course_registration()->create([
-                'student_id' => '1',
                 "courses" =>  array_merge($request->coursesToRegister, $request->coursesToRetake),
                 'year' => $request->apiData['session'],
                 'venture' => $request->venture

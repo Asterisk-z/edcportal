@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('admin');
+            $table->string('role');
             $table->integer('role_id')->constrained('roles')->default(4);
-            $table->string('token_id')->constrained('tokens')->default(0);
             $table->string('gender');
             $table->string('mobileNumber')->nullable();
             $table->enum('temp_password', ['YES', 'NO'])->default('YES');

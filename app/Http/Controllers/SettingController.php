@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\SettingRequest;
+use App\Models\AppSetting;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class SchoolManagement extends Controller
+class SettingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +16,8 @@ class SchoolManagement extends Controller
      */
     public function index()
     {
-        return Inertia::render("Admin/School");
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $applicationSettings = AppSetting::orderBy('name', 'asc')->get();
+        return Inertia::render('Admin/Setting/Index');
     }
 
     /**
@@ -34,9 +26,14 @@ class SchoolManagement extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SettingRequest $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'value' => 'required|string'
+        ]);
+        return AppSetting::create($data);
+
     }
 
     /**
@@ -47,18 +44,18 @@ class SchoolManagement extends Controller
      */
     public function show($id)
     {
-        //
+        return AppSetting::where('id', $id)->firstOrFail();
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getByName($name)
     {
-        //
+        return AppSetting::where('name', $name)->firstOrFail();
     }
 
     /**
@@ -68,9 +65,11 @@ class SchoolManagement extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SettingRequest $request, $id)
     {
-        //
+
+        return AppSetting::where('id', $id)->update($request->validated());
+
     }
 
     /**
@@ -81,6 +80,6 @@ class SchoolManagement extends Controller
      */
     public function destroy($id)
     {
-        //
+        return AppSetting::where('id', $id)->delete();
     }
 }
