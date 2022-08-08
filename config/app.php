@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         // App\Http\Middleware\HandleInertiaRequests::class,
+        Mtownsend\ResponseXml\Providers\ResponseXmlServiceProvider::class,
 
     ],
 

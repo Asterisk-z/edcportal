@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('department');
             $table->string('regNumber');
+            $table->string('systemNumber');
             $table->string('paymentCode');
-            $table->string('item');
-            $table->string('amount');
+            $table->string('venture');
             $table->enum('status', ['PAID', 'NOTPAID'])->default('NOTPAID');
             $table->string('items');
             $table->string('totalAmount');

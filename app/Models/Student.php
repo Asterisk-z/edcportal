@@ -19,7 +19,7 @@ class Student extends Model
     }
 
     public function course_registration() {
-        return $this->hasMany(CourseRegistration::class);
+        return $this->hasOne(CourseRegistration::class);
     }
 
     public function venture() {

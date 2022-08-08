@@ -11,8 +11,16 @@ class Transaction extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'items' => 'array',
+    ];
+
     public function student() {
         return $this->belongsTo(Student::class);
+    }
+
+    public function payment() {
+        return $this->hasOne(PaymentNotification::class);
     }
 
 }

@@ -54,7 +54,7 @@ class StudentSeeder extends Seeder
             'department' => "Law",
             'faculty' => "Law",
         ])->course_registration()->create([
-                "courses" =>  [3],
+                "courses" =>  [3, 1],
                 'year'    => env('SESSION'),
                 'venture' =>  5
         ]);

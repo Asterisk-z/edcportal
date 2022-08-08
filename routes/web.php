@@ -37,7 +37,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin/')->name('admin.')->group( f
 
     Route::get('students', [StudentManagementController::class, 'index'])->name('students');
 
-    Route::get('students/registration', [StudentManagementController::class, 'registration']);
+    // Route::get('students/registration', [StudentManagementController::class, 'registration']);
     Route::post('students/verify/payment', [StudentManagementController::class, 'verifyPayment']);
     Route::post('students/register', [StudentManagementController::class, 'register']);
 
@@ -48,6 +48,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin/')->name('admin.')->group( f
     Route::post('settings/delete', [SettingController::class, 'destroy'])->name('setting.delete');
     Route::post('settings/searchById/{id}', [SettingController::class, 'show'])->name('setting.searchById');
     Route::post('settings/searchByName/{name}', [SettingController::class, 'getByName'])->name('setting.searchByName');
+
 
 
 
