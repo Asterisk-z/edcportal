@@ -36,7 +36,7 @@ class StudentSeeder extends Seeder
         ])->course_registration()->create([
                 "courses" =>  [3],
                 'year'    => env('SESSION'),
-                'venture' =>  5
+                'venture' =>  0
         ]);
         $user->students()->create([
             'fullName' => "caniel mes",
@@ -54,9 +54,9 @@ class StudentSeeder extends Seeder
             'department' => "Law",
             'faculty' => "Law",
         ])->course_registration()->create([
-                "courses" =>  [3, 1],
+                "courses" =>  [1, 2, 3],
                 'year'    => env('SESSION'),
-                'venture' =>  5
+                'venture' =>  12
         ]);
         $user->students()->create([
             'fullName' => "caniel mes",
@@ -64,7 +64,7 @@ class StudentSeeder extends Seeder
             'email' => "dan@gmail.com",
             'sex' => "male",
             'phoneNumber'  => "233232312",
-            'level' => "300",
+            'level' => "200",
             'sessionOfRegistration' => "2020/2021",
             'fingerprint' => Str::uuid(),
             'passport' => Str::uuid(),
@@ -74,9 +74,9 @@ class StudentSeeder extends Seeder
             'department' => "Law",
             'faculty' => "Law",
         ])->course_registration()->create([
-                "courses" =>  [3],
+                "courses" =>  [1, 2],
                 'year'    => env('SESSION'),
-                'venture' =>  5
+                'venture' =>  10
         ]);
         $user->students()->create([
             'fullName' => "caniel mes",
@@ -84,7 +84,7 @@ class StudentSeeder extends Seeder
             'email' => "dan@gmail.com",
             'sex' => "male",
             'phoneNumber'  => "233232312",
-            'level' => "300",
+            'level' => "100",
             'sessionOfRegistration' => "2020/2021",
             'fingerprint' => Str::uuid(),
             'passport' => Str::uuid(),
@@ -94,9 +94,9 @@ class StudentSeeder extends Seeder
             'department' => "Law",
             'faculty' => "Law",
         ])->course_registration()->create([
-                "courses" =>  [3],
+                "courses" =>  [1],
                 'year'    => env('SESSION'),
-                'venture' =>  5
+                'venture' =>  0
         ]);
     }
 }

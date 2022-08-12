@@ -17,7 +17,7 @@ class CourseSeeder extends Seeder
     {
         Courses::create([
             'title' => 'ENTREPRENEURSHIP AND YOUTH DEVELOPMENT',
-            'code' => 'GST 102',
+            'code' => 'GST102',
             'unit' => '2',
             'level' => '100',
             'fee' => '1000',
@@ -26,7 +26,7 @@ class CourseSeeder extends Seeder
         ]);
         Courses::create([
             'title' => 'ENTREPRENEURSHIP EDUCATION',
-            'code' => 'GST 202',
+            'code' => 'GST202',
             'unit' => '2',
             'level' => '200',
             'fee' => '5000',
@@ -34,8 +34,8 @@ class CourseSeeder extends Seeder
             'semester' => 'second'
         ]);
         Courses::create([
-            'title' => 'ENTREPRENEURSHIP TRADE SKILLS',
-            'code' => 'GST 302',
+            'title' => 'ENTREPRENEURSHIP PRACTICAL',
+            'code' => 'GST302',
             'unit' => '2',
             'level' => '300',
             'fee' => '1000',
@@ -44,8 +44,8 @@ class CourseSeeder extends Seeder
         ]);
 
         Courses::create([
-            'title' => 'ENTREPRENEURSHIP AND YOUTH DEVELOPMENT',
-            'code' => 'GST 102',
+            'title' => 'ENTREPRENEURSHIP AND YOUTH DEVELOPMENT ',
+            'code' => 'GST102_CARRYOVER',
             'unit' => '2',
             'level' => '100',
             'fee' => '1000',
@@ -53,8 +53,8 @@ class CourseSeeder extends Seeder
             'semester' => 'second'
         ]);
         Courses::create([
-            'title' => 'ENTREPRENEURSHIP EDUCATION',
-            'code' => 'GST 202',
+            'title' => 'ENTREPRENEURSHIP EDUCATION ',
+            'code' => 'GST202_CARRYOVER',
             'unit' => '2',
             'level' => '200',
             'fee' => '5000',
@@ -62,8 +62,8 @@ class CourseSeeder extends Seeder
             'semester' => 'second'
         ]);
         Courses::create([
-            'title' => 'ENTREPRENEURSHIP TRADE SKILLS',
-            'code' => 'GST 302',
+            'title' => 'ENTREPRENEURSHIP PRACTICAL ',
+            'code' => 'GST302_CARRYOVER',
             'unit' => '2',
             'level' => '300',
             'fee' => '1000',

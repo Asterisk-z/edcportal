@@ -4,20 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Courses;
-use App\Models\Student;
 use App\Models\Transaction;
 use App\Models\Venture;
-use Exception;
+use App\Service\ArrayToXml;
 use Illuminate\Http\Request;
+use Str;
 
 class TransactionsController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public $data;
+
     public const HEADER =  [
         "Content-Type" => 'text/xml'
     ];
@@ -50,14 +47,14 @@ class TransactionsController extends Controller
             "MerchantReference" => 639,
             'Customers' => [
                 'Customer' => [
-                    'Status' => 0,
+                    'Status' => 1,
                     'Amount' => 0,
                     ]
                 ]
             ];
 
 
-        return response()->xml($CustomerInformationResponse, '200', $this->HEADER, 'CustomerInformationResponse');
+        return response()->xml($CustomerInformationResponse, '200', self::HEADER, 'CustomerInformationResponse');
     }
 
     /**
@@ -67,74 +64,87 @@ class TransactionsController extends Controller
      */
     public function validateStudent($data)
     {
-        $student = Transaction::where('systemNumber', $data['CustReference'])->firstOrFail();
+        $student = Transaction::where('systemNumber', $data['CustReference'])->first();
+
+        if (!$student) {
+            return $this->error();
+        }
+
         $venture = Venture::where('id', $student->venture)->first();
 
         //First Insert Venture
         $items = [];
+        $portalFee = 500;
+        $sugAlmanac = 400;
+        $documentationFee = 1000 * count($student->items);
 
-        $totalCoursesFee = $venture->fee;
+        $totalCoursesFee =  $portalFee +  $sugAlmanac +  $documentationFee;
 
         foreach ($student->items as $key => $item) {
             $course = Courses::where('id', $item)->first();
             $totalCoursesFee = $totalCoursesFee + $course->fee;
-            $items['Item'.$key] =  [
-                'ProductName' => $course->title,
-                'ProductCode' => $course->code,
-                'Quantity' => '1',
-                'Price' => $course->fee,
-                'Subtotal' => $course->fee,
-                'Tax' => '0',
-                'Total' => $course->fee,
-            ];
         }
 
-        $items["Item".++$key] = [
-                'ProductName' => $venture->name,
-                'ProductCode' => $venture->code,
-                'Quantity' => '1',
-                'Price' => $venture->fee,
-                'Subtotal' => $venture->fee,
-                'Tax' => '0',
-                'Total' => $venture->fee,
-        ];
+        if ($venture) {
+            $totalCoursesFee += $venture->fee;
+        }
+
+
 
         // Calculate Total sum
         $interswitchfee = $totalCoursesFee * 0.015;
-        $portalfee = 500;
-        $total = $totalCoursesFee + $interswitchfee + $portalfee;
 
-        $CustomerInformationResponse = [
-            "MerchantReference" => 639,
-            'Customers' => [
-                'Customer' => [
-                    'Status' => 0,
-                    'CustReference' => $data['CustReference'],
-                    'CustomerReferenceAlternate' => '',
-                    'FirstName' => $student->name,
-                    'LastName' => '',
-                    'Email' => 'olangdan17@gmail.com',
-                    'Phone' => '',
-                    'ThirdPartyCode' => '',
-                    'Amount' => $total,
-                    'PaymentItems' => [
-                        // 'Item' => [
-                        //     'ProductName' => 'PayAtBank',
-                        //     'ProductCode' => '01',
-                        //     'Quantity' => '1',
-                        //     'Price' => '234078',
-                        //     'Subtotal' => '234078',
-                        //     'Tax' => '0',
-                        //     'Total' => '234078',
-                        // ],
-                    ]
-                ]
-            ]
-        ];
+        $total = $totalCoursesFee + $interswitchfee;
 
-        $CustomerInformationResponse['Customers']['Customer']['PaymentItems'] = [...$items];
+        $ref = $data['CustReference'];
 
-        return response()->xml($CustomerInformationResponse, '200', self::HEADER, 'CustomerInformationResponse');
+        $this->data = new ArrayToXml();
+        $this->data->emptyElement('CustomerInformationResponse');
+        $this->data->insideEmptyElement('MerchantReference', "6405");
+        $this->data->emptyElement('Customers');
+        $this->data->emptyElement('Customer');
+        $this->data->insideEmptyElement('Status', "0");
+        $this->data->insideEmptyElement('CustReference', $ref);
+        $this->data->insideEmptyElement('CustomerReferenceAlternate', "");
+        $this->data->insideEmptyElement('FirstName', Str::upper($student->name));
+        $this->data->insideEmptyElement('LastName', "");
+        $this->data->insideEmptyElement('Email', "enquiries@normatechsystems.com");
+        $this->data->insideEmptyElement('Phone', "09038509510");
+        $this->data->insideEmptyElement('ThirdPartyCode', "");
+        $this->data->insideEmptyElement('Amount', ceil($total));
+        $this->data->emptyElement('PaymentItems');
+        $this->data->emptyElement('Item');
+        $this->itemContent("PORTAL FEE", "PORTAL_FEE", $portalFee);
+
+
+        foreach ($student->items as $key => $item) {
+            $course = Courses::where('id', $item)->first();
+            $this->data->emptyElement('Item', true);
+            $this->itemContent($course->title, $course->code, $course->fee);
+        }
+
+
+        $this->data->emptyElement('Item', true);
+        $this->itemContent("EDC DOCUMENTATION", "EDC_DOCUMENTATION", $documentationFee, count($student->items));
+
+
+        $this->data->emptyElement('Item', true);
+        $this->itemContent("SUG ALMANAC", "SUG_ALMANAC", $sugAlmanac);
+
+
+        if ($venture) {
+            $this->data->emptyElement('Item', true);
+            $this->itemContent(Str::upper($venture->name), $venture->code, $venture->fee);
+        }
+
+
+        return response($this->data->getContent(), 200)
+                        ->header('Content-Type', 'text/xml');
+
+
+
+
+
     }
 
     /**
@@ -147,18 +157,19 @@ class TransactionsController extends Controller
     {
 
             $payment = $payment['Payments']['Payment'];
-            $PaymentNotificationResponse = [
-                'Payments' => [
-                    'Payment' => [
-                        "PaymentLogId" => $payment['PaymentLogId'],
-                        "Status" => "0"
-                    ]
-                ]
-            ];
-
-
-        try {
             $transaction = Transaction::where("systemNumber", $payment['CustReference'])->first();
+
+            if (!$transaction) {
+                $PaymentNotificationResponse = [
+                    'Payments' => [
+                        'Payment' => [
+                            "PaymentLogId" => $payment['PaymentLogId'],
+                            "Status" => "1"
+                        ]
+                    ]
+                ];
+                return response()->xml($PaymentNotificationResponse, '200', self::HEADER, 'PaymentNotificationResponse');
+            }
 
             $transaction->payment()->create([
                 "IsRepeated" => $payment["IsRepeated"],
@@ -198,31 +209,30 @@ class TransactionsController extends Controller
                 "Teller" => $payment["Teller"],
             ]);
 
+
+            $PaymentNotificationResponse = [
+                'Payments' => [
+                    'Payment' => [
+                        "PaymentLogId" => $payment['PaymentLogId'],
+                        "Status" => "0"
+                    ]
+                ]
+            ];
+
+
             return response()->xml($PaymentNotificationResponse, '200', self::HEADER, 'PaymentNotificationResponse');
-
-        }catch(Exception $e) {
-
-            $PaymentNotificationResponse['Payments']['Payment']['Status'] = 1;
-
-            return response()->xml($PaymentNotificationResponse, '200', self::HEADER, 'PaymentNotificationResponse');
-
-        }
-
-
-
-
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function itemContent($title, $code, $price, $quantity = '1')
     {
-        //
+        $this->data->insideEmptyElement('ProductName', $title);
+        $this->data->insideEmptyElement('ProductCode', $code);
+        $this->data->insideEmptyElement('Quantity', $quantity);
+        $this->data->insideEmptyElement('Price', $price);
+        $this->data->insideEmptyElement('Subtotal', $price);
+        $this->data->insideEmptyElement('Tax', "0");
+        $this->data->insideEmptyElement('Total', $price);
     }
 
     /**
