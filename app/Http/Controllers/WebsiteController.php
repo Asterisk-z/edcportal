@@ -27,6 +27,22 @@ class WebsiteController extends Controller
      */
     public function index()
     {
+
+
+        $data = new ArrayToXml();
+        $data->emptyElement('CustomerInformationResponse');
+        $data->insideEmptyElement('MerchantReference', env("MARCHANTID"));
+        $data->emptyElement('Customers');
+        $data->emptyElement('Customer');
+        $data->insideEmptyElement('Status', "0");
+        $data->insideEmptyElement('CustReference', "wwe");
+        $data->insideEmptyElement('CustomerReferenceAlternate', "ewe");
+        $data->insideEmptyElement('FirstName', 'wew');
+        $data->insideEmptyElement('LastName', "");
+
+
+        dd($data->getContent());
+
         dump(PaymentNotification::all());
         dump(Venture::all());
         dump(Courses::all());

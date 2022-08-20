@@ -35,16 +35,16 @@ class ArrayToXml {
 
         }
 
+        $this->process->createAttributeNS('http://techquest.interswitchng.com/', 'ns2:attr');
+        $this->process->createAttributeNS('http://www.w3.org/2003/05/soap-envelope', 'ns3:attr');
+
 
     }
 
     public function insideEmptyElement($tag, $value) {
 
-        // if($parent) {
-        //     $this->containerList[count($this->containerList) - 1]->appendChild($this->process->createElement($tag, $value));
-        // }else {
             $this->emptyContainer->appendChild($this->process->createElement($tag, $value));
-        // }
+
 
 
     }

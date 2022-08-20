@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\StudentManagementController;
 use App\Http\Controllers\Admin\FeeManagement;
 use App\Http\Controllers\Admin\LibraryManagementContoller;
 use App\Http\Controllers\Admin\SchoolManagement;
+use App\Http\Controllers\Api\TransactionsController;
 use App\Http\Controllers\Student\Dashboard;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;

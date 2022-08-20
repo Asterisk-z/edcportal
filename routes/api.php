@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+Route::post("", [TransactionsController::class, "error"])->name('api');
 Route::post("transaction", [TransactionsController::class, "index"])->name('api.transaction');
